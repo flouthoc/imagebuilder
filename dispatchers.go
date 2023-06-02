@@ -31,7 +31,7 @@ var (
 var localspec = platforms.DefaultSpec()
 
 // https://docs.docker.com/engine/reference/builder/#automatic-platform-args-in-the-global-scope
-var builtinBuildArgs = map[string]string{
+var BuiltInBuildArgs = map[string]string{
 	"TARGETPLATFORM": localspec.OS + "/" + localspec.Architecture,
 	"TARGETOS":       localspec.OS,
 	"TARGETARCH":     localspec.Architecture,
@@ -44,8 +44,8 @@ var builtinBuildArgs = map[string]string{
 
 func init() {
 	if localspec.Variant != "" {
-		builtinBuildArgs["TARGETPLATFORM"] = builtinBuildArgs["TARGETPLATFORM"] + "/" + localspec.Variant
-		builtinBuildArgs["BUILDPLATFORM"] = builtinBuildArgs["BUILDPLATFORM"] + "/" + localspec.Variant
+		BuiltInBuildArgs["TARGETPLATFORM"] = BuiltInBuildArgs["TARGETPLATFORM"] + "/" + localspec.Variant
+		BuiltInBuildArgs["BUILDPLATFORM"] = BuiltInBuildArgs["BUILDPLATFORM"] + "/" + localspec.Variant
 	}
 }
 
@@ -610,7 +610,7 @@ func arg(b *Builder, args []string, attributes map[string]bool, flagArgs []strin
 				b.Args["TARGETPLATFORM"] = b.Args["TARGETPLATFORM"] + "/" + p.Variant
 			}
 		}
-	} else if val, ok := builtinBuildArgs[arg]; ok {
+	} else if val, ok := BuiltInBuildArgs[arg]; ok {
 		name = arg
 		value = val
 		hasDefault = true
